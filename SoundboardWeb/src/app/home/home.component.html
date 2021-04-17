@@ -1,0 +1,6 @@
+<button (click)="authService.login()" *ngIf="!isAuthorized" style="flex: auto; align-items: center">login</button>
+<div *ngIf="isAuthorized">
+  <div *ngFor="let guild of guilds">
+    <p>{{guild.name}}</p>
+  </div>
+</div>

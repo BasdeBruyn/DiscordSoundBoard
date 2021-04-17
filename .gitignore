@@ -1,0 +1,12 @@
+# idea
+**/.idea/
+*.iml
+
+# config
+*.json
+*.yml
+*.properties
+environment*.ts
+
+# maven build
+**/target
