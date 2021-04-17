@@ -10,3 +10,6 @@ environment*.ts
 
 # maven build
 **/target
+
+# don't ignore examples
+!example.*

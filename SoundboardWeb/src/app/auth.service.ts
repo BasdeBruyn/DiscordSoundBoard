@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Subject, Subscriber} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Router} from '@angular/router';
+import {environment} from 'src/environments/environment'
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,8 @@ export class AuthService {
   login(): void {
     const queryParams = new HttpParams({
       fromObject: {
-        client_id: '',
-        redirect_uri: 'http://localhost:4200/redirect',
+        client_id: environment.discordClientId,
+        redirect_uri: environment.discordRedirectUri,
         response_type: 'code',
         scope: 'identify guilds'
       }
@@ -31,10 +32,10 @@ export class AuthService {
 
   requestToken(code: string): void {
     const body = new URLSearchParams();
-    body.set('client_id', '');
-    body.set('client_secret', '');
+    body.set('client_id', environment.discordClientId);
+    body.set('client_secret', environment.discordClientSecret);
     body.set('grant_type', 'authorization_code');
-    body.set('redirect_uri', 'http://localhost:4200/redirect');
+    body.set('redirect_uri', environment.discordRedirectUri);
     body.set('scope', 'identify guilds');
     body.set('code', code);
 

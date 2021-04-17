@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: ''
+      POSTGRES_PASSWORD: ''
+      POSTGRES_DB: ''
+    volumes:
+      - sound_board_database:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+  bot:
+    image: soundboard_bot
+    build: ./SoundBoardBot
+    environment:
+      OWNER_ID: '<discord owner id>'
+      PREFIX: '<command prefix>'
+      BOT_TOKEN: '<discord bot token>'
+      API_URL: 'http://api:9090/api/sound_effect/'
+  api:
+    image: soundboard_api
+    build: ./SoundBoardApi
+    ports:
+      - '9090:9090'
+
+volumes:
+  sound_board_database:
