@@ -7,7 +7,8 @@ import {RedirectComponent} from './redirect/redirect.component';
 import {HomeComponent} from './home/home.component';
 import {HttpClientModule} from '@angular/common/http';
 import {AuthService} from './auth.service';
-import {DiscordService} from './discord.service';
+import {SoundEffectService} from './soundEffect.service';
+import {AuthGuard} from './auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -21,8 +22,9 @@ import {DiscordService} from './discord.service';
     HttpClientModule
   ],
   providers: [
+    AuthGuard,
     AuthService,
-    DiscordService
+    SoundEffectService
   ],
   bootstrap: [AppComponent]
 })

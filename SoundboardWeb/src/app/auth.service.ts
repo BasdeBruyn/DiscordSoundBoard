@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {Subject, Subscriber} from 'rxjs';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Subject} from 'rxjs';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Router} from '@angular/router';
-import {environment} from 'src/environments/environment'
+import {environment} from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,59 +11,59 @@ export class AuthService {
   private _isAuthorized = false;
   private _isAuthorizedObs = new Subject<boolean>();
 
-  private _discordToken = '';
-  private _discordTokenObs = new Subject<string>();
+  private _jwtToken = '';
+  private _jwtTokenObs = new Subject<string>();
 
-  constructor(private router: Router,
-              private httpClient: HttpClient) {
+  constructor(
+    private router: Router,
+    private httpClient: HttpClient
+  ) {
   }
 
   login(): void {
-    const queryParams = new HttpParams({
-      fromObject: {
-        client_id: environment.discordClientId,
-        redirect_uri: environment.discordRedirectUri,
-        response_type: 'code',
-        scope: 'identify guilds'
-      }
-    });
-    window.location.href = 'https://discord.com/api/oauth2/authorize?' + queryParams.toString();
+    const storedToken = localStorage.getItem('jwtToken');
+    if (storedToken) {
+      this._isAuthorized = true;
+      this._jwtToken = storedToken;
+      this._isAuthorizedObs.next(this._isAuthorized);
+      this._jwtTokenObs.next(this._jwtToken);
+      this.router.navigate(['musicplayer']);
+    } else {
+      const queryParams = new HttpParams({
+        fromObject: {
+          client_id: environment.discordClientId,
+          redirect_uri: environment.discordRedirectUri,
+          response_type: 'code',
+          scope: 'identify guilds'
+        }
+      });
+      window.location.href = 'https://discord.com/api/oauth2/authorize?' + queryParams.toString();
+    }
   }
 
-  requestToken(code: string): void {
-    const body = new URLSearchParams();
-    body.set('client_id', environment.discordClientId);
-    body.set('client_secret', environment.discordClientSecret);
-    body.set('grant_type', 'authorization_code');
-    body.set('redirect_uri', environment.discordRedirectUri);
-    body.set('scope', 'identify guilds');
-    body.set('code', code);
-
-    const options = {
-      headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
-    };
-
-    this.httpClient
-      .post<any>('https://discord.com/api/v6/oauth2/token', body.toString(), options)
-      .subscribe(response => {
+  requestToken(code: string): Promise<void> {
+    const request = this.httpClient.get('http://localhost:9090/api/auth/token?code=' + code, {responseType: 'text'});
+    return request.toPromise()
+      .then((response: string) => {
         this._isAuthorized = true;
-        this._discordToken = response.access_token;
+        this._jwtToken = response;
         this._isAuthorizedObs.next(this._isAuthorized);
-        this._discordTokenObs.next(this._discordToken);
-        this.router.navigate(['']);
-      });
+        this._jwtTokenObs.next(this._jwtToken);
+        localStorage.setItem('jwtToken', this._jwtToken);
+      })
+      .catch(console.log);
   }
 
   get isAuthorized(): boolean {
     return this._isAuthorized;
   }
 
-  get discordToken(): string {
-    return this._discordToken;
+  get jwtToken(): string {
+    return this._jwtToken;
   }
 
-  get discordTokenObs(): Subject<string> {
-    return this._discordTokenObs;
+  get jwtTokenObs(): Subject<string> {
+    return this._jwtTokenObs;
   }
 
   get isAuthorizedObs(): Subject<boolean> {

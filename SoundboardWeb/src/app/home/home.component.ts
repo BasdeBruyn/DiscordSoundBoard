@@ -1,10 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {HttpClient, HttpParams} from '@angular/common/http';
 import {AuthService} from '../auth.service';
 import {Subscription} from 'rxjs';
-import {DiscordService} from '../discord.service';
-import {Guild} from '../models/guild';
+import {SoundEffect} from '../models/SoundEffect';
+import {SoundEffectService} from '../soundEffect.service';
 
 @Component({
   selector: 'app-home',
@@ -12,26 +10,26 @@ import {Guild} from '../models/guild';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  public guilds: Guild[] = [];
+  public soundEffects: SoundEffect[] = [];
   public isAuthorized = false;
-  private isAuthorizedObs: Subscription = new Subscription();
+  private isAuthorizedObs = new Subscription();
+  private soundEffectsObs = new Subscription();
 
-  constructor(public authService: AuthService,
-              public discordService: DiscordService) {
+  constructor(public authService: AuthService, public soundEffectService: SoundEffectService) {
   }
 
   ngOnInit(): void {
     this.isAuthorized = this.authService.isAuthorized;
     this.isAuthorizedObs = this.authService.isAuthorizedObs.subscribe(isAuthorized => this.isAuthorized = isAuthorized);
+    this.soundEffectsObs = this.soundEffectService.soundEffectsObs.subscribe(soundEffects => this.soundEffects = soundEffects);
 
-    this.discordService.getGuilds().subscribe(this.setGuilds.bind(this));
+    if (this.isAuthorized) {
+      this.soundEffectService.retrieveSoundEffects();
+    }
   }
 
   ngOnDestroy(): void {
     this.isAuthorizedObs.unsubscribe();
-  }
-
-  setGuilds(guilds: Guild[]): void {
-    this.guilds = guilds;
+    this.soundEffectsObs.unsubscribe();
   }
 }
