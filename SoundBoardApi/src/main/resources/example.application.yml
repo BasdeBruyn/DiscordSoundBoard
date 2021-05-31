@@ -23,7 +23,7 @@ discord:
     scope:
       - 'identify'
       - 'guilds'
-    user-agent: 'insomnia/2021.2.2'
+    user-agent: ''
   api-uri: 'https://discord.com/api'
 
 cors:
