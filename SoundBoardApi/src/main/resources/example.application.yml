@@ -1,0 +1,43 @@
+spring:
+  datasource:
+    url: 'jdbc:postgresql://<host>/<db name>'
+    username: ''
+    password: ''
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+
+server:
+  port: 9090
+  servlet:
+    context_path: '/api'
+
+discord:
+  oauth2:
+    client-id: ''
+    client-secret: ''
+    redirect-uri: '<url soundboard web>/redirect'
+    scope:
+      - 'identify'
+      - 'guilds'
+    user-agent: ''
+  api-uri: 'https://discord.com/api'
+
+cors:
+  allowed-methods:
+    - GET
+    - POST
+    - PUT
+    - DELETE
+
+authentication:
+  service:
+    password: '<same password as soundboard bot>'
+  jwt:
+    secret: ''
+
+music-player:
+  url: '<url soundboard bot>'

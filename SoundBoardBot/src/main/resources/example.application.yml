@@ -1,0 +1,8 @@
+soundboard:
+  api:
+    password: '<same password as soundboard api>'
+    url: '<url soundboard api>/api/sound_effect/'
+  bot:
+    bot-token: ''
+    owner-id: ''
+    prefix: '-'

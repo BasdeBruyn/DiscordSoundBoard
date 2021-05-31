@@ -1,0 +1,25 @@
+@import "variables";
+
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5%;
+
+  input[type=text] {
+    background-color: $darkgrey;
+    border-width: 0;
+    border-radius: 0.5em;
+    width: 100%;
+    font-size: 2em;
+    padding: 0.6rem 1rem;
+    color: $lightgrey;
+
+    &:focus {
+      outline: none;
+    }
+
+    &::placeholder {
+      color: $lighter-grey;
+    }
+  }
+}
