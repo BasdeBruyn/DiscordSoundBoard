@@ -26,7 +26,7 @@ public class SoundEffectController {
 
     @GetMapping
     public Iterable<SoundEffect> getAll() {
-        return soundEffectRepository.findAll();
+        return soundEffectRepository.findByOrderByName();
     }
 
     @GetMapping("/{name}")

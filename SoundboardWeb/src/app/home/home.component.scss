@@ -1,0 +1,20 @@
+@import "variables";
+
+.home {
+  top: 50%;
+  position: absolute;
+  transform: translate(0%, -50%);
+  width: 100%;
+
+  .info {
+    width: 50%;
+    margin: auto;
+    padding: 1em;
+    background-color: $darkgrey;
+    p {
+      margin: 0;
+      border-color: $black;
+      color: $lightgrey;
+    }
+  }
+}

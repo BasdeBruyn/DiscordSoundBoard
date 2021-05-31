@@ -18,20 +18,33 @@ export class SoundEffectService {
   ) {
   }
 
+  private static fuzzySearch(searchTerm: string, soundEffect: SoundEffect): boolean {
+    const pattern = searchTerm.toLowerCase().split('').reduce((a, b) => a + '.*' + b);
+    return (new RegExp(pattern)).test(soundEffect.name.toLowerCase());
+  }
+
   retrieveSoundEffects(): void {
     const headers = {Authorization: 'Bearer ' + this.authService.jwtToken};
-    this.httpClient.get<SoundEffect[]>(environment.apiBaseUrl + '/api/sound_effect', {headers})
+    this.httpClient.get<SoundEffect[]>(environment.apiBaseUrl + '/sound_effect', {headers})
       .subscribe(soundEffects => {
         this._soundEffects = soundEffects;
         this._soundEffectsObs.next(soundEffects);
       });
   }
 
-  get soundEffects(): SoundEffect[] {
-    return this._soundEffects;
+  search(searchTerm: string): void {
+    let value = this._soundEffects;
+    if (searchTerm) {
+      value = this.soundEffects.filter(soundEffect => SoundEffectService.fuzzySearch(searchTerm, soundEffect));
+    }
+    this.soundEffectsObs.next(value);
   }
 
   get soundEffectsObs(): Subject<SoundEffect[]> {
     return this._soundEffectsObs;
+  }
+
+  get soundEffects(): SoundEffect[] {
+    return this._soundEffects;
   }
 }

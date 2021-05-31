@@ -1,6 +1,8 @@
-<button (click)="authService.login()" *ngIf="!isAuthorized" style="flex: auto; align-items: center">login</button>
-<div *ngIf="isAuthorized">
-  <div *ngFor="let soundEffect of soundEffects">
-    <p>{{soundEffect.name}}: {{soundEffect.url}}</p>
+<div class="home">
+  <div class="info">
+    <p>
+      To log in you need to give this site permission to see your discord identity.
+      This is used for retrieving your user id, with which the bot can find the voice channel you are currently in.
+    </p>
   </div>
 </div>

@@ -1,23 +1,21 @@
 package nl.basdebruyn.soundboardbot.bot.properties;
 
-import org.hibernate.validator.constraints.Length;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 @Validated
 @Configuration
 @ConfigurationProperties("soundboard.bot")
 public class BotProperties {
     @NotEmpty
-    private  String ownerId;
+    private String ownerId;
     @NotEmpty
-    private  String prefix;
+    private String prefix;
     @NotEmpty
-    private  String botToken;
+    private String botToken;
 
     public String getOwnerId() {
         return ownerId;

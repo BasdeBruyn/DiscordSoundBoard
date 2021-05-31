@@ -1,0 +1,12 @@
+<nav>
+  <ul>
+    <li>
+      <span class="brand">Soundboard</span>
+    </li>
+    <li>
+      <span *ngIf="isAuthenticated" class="nav-item" (click)="logout()">Logout</span>
+      <span *ngIf="!isAuthenticated" class="nav-item" (click)="login()">Login</span>
+    </li>
+  </ul>
+</nav>
+
