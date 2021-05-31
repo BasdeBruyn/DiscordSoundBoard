@@ -1,0 +1,23 @@
+$grey: #36393F;
+$darkgrey: #2F3136;
+$lightgrey: #C3C3C4;
+$lighter-grey: #656565;
+$black: #202225;
+$white: #FEFEFE;
+
+$blue: #00B0F4;
+$mat-blue: #354154;
+$light-mat-blue: #3e5373;
+
+$error: #C84242;
+$success: #3E9A70;
+$info: #7289da;
+
+$context-colors: ("error": $error, "success": $success, "info": $info);
+
+@mixin center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}

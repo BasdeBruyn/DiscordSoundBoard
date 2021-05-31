@@ -20,15 +20,22 @@ export class AuthService {
   ) {
   }
 
-  login(): void {
+  tryLogin(): boolean {
     const storedToken = localStorage.getItem('jwtToken');
-    if (storedToken) {
-      this._isAuthorized = true;
-      this._jwtToken = storedToken;
-      this._isAuthorizedObs.next(this._isAuthorized);
-      this._jwtTokenObs.next(this._jwtToken);
-      this.router.navigate(['musicplayer']);
-    } else {
+    if (!storedToken) {
+      return false;
+    }
+
+    this._isAuthorized = true;
+    this._jwtToken = storedToken;
+    this._isAuthorizedObs.next(this._isAuthorized);
+    this._jwtTokenObs.next(this._jwtToken);
+    this.router.navigate(['soundboard']);
+    return true;
+  }
+
+  login(): void {
+    if (!this.tryLogin()) {
       const queryParams = new HttpParams({
         fromObject: {
           client_id: environment.discordClientId,
@@ -37,12 +44,20 @@ export class AuthService {
           scope: 'identify guilds'
         }
       });
-      window.location.href = 'https://discord.com/api/oauth2/authorize?' + queryParams.toString();
+      window.location.href = environment.discordAuthorizeUrl + queryParams.toString();
     }
   }
 
+  logout(): void {
+    localStorage.removeItem('jwtToken');
+    this._isAuthorized = false;
+    this._jwtToken = '';
+    this._isAuthorizedObs.next(this._isAuthorized);
+    this._jwtTokenObs.next(this._jwtToken);
+  }
+
   requestToken(code: string): Promise<void> {
-    const request = this.httpClient.get('http://localhost:9090/api/auth/token?code=' + code, {responseType: 'text'});
+    const request = this.httpClient.get(environment.apiBaseUrl + '/auth/token?code=' + code, {responseType: 'text'});
     return request.toPromise()
       .then((response: string) => {
         this._isAuthorized = true;
@@ -50,8 +65,7 @@ export class AuthService {
         this._isAuthorizedObs.next(this._isAuthorized);
         this._jwtTokenObs.next(this._jwtToken);
         localStorage.setItem('jwtToken', this._jwtToken);
-      })
-      .catch(console.log);
+      });
   }
 
   get isAuthorized(): boolean {

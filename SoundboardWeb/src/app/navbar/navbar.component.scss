@@ -1,0 +1,32 @@
+@import "variables";
+
+nav {
+  background-color: #292B2F;
+
+  ul{
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0.5em 1em;
+
+    li {
+      position: relative;
+      list-style: none;
+      border-radius: 0.5em;
+
+      span {
+        color: $white;
+        font-size: 1.5em;
+
+        &.brand {
+          font-weight: bold;
+        }
+
+        &.nav-item:hover {
+          color: $lightgrey;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

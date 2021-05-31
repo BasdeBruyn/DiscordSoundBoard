@@ -1,0 +1,10 @@
+@import "variables";
+
+.redirect {
+  @include center;
+
+  p {
+    font-size: 2em;
+    color: $lightgrey;
+  }
+}

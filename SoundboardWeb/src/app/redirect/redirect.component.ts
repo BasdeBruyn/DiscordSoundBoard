@@ -17,7 +17,9 @@ export class RedirectComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      this.authService.requestToken(params.code);
+      this.authService.requestToken(params.code)
+        .then(() => this.router.navigate(['soundboard']))
+        .catch(() => this.router.navigate(['']));
     });
   }
 }

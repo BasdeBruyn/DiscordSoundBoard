@@ -1,0 +1,11 @@
+@import "variables";
+
+.board {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-auto-rows: 5em;
+  gap: 1em;
+  padding: 1em;
+  background: $darkgrey;
+  border-radius: 1em;
+}
